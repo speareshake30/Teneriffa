@@ -36,6 +36,7 @@ const CHECKPOINTS = [
     icon: '🎉',
     title: 'DET BLIR KUL',
     color: '#e0913a',
+    image: 'assets/detblirkul.jpg',
     fact: "Alla kommer att göra sin egen grej men fira julafton och nyår tillsammans med BBQ på Gujes terass! Vi vill att 10-12 pers ska komma men vi vet att vi iallafall blir 5. Restid (Arlanda ARN → Tenerife Sur, TFS) tar ungefär 6 timmar.",
     trip: null,
   },
