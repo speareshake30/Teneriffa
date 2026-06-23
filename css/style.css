@@ -1,0 +1,201 @@
+/* ---- Tenerife Drive: fullscreen pixel-art racer styling ---- */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --sun:    #ffd86b;
+  --sky-hi: #ff7b54;
+  --sky-lo: #5b2a86;
+  --ink:    #1a1033;
+  --road:   #4a4a52;
+  --accent: #ff3b5c;
+  --gold:   #ffd86b;
+  --teal:   #2ec4b6;
+  --font: "Courier New", "Consolas", monospace;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  font-family: var(--font);
+  /* Prevent iOS touch behaviours that break a game */
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+#game {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+#screen {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* Crisp pixels when the low-res canvas is scaled up */
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  background: #000;
+}
+
+.hidden { display: none !important; }
+
+/* ---------- Overlays (start / card / finish) ---------- */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: env(safe-area-inset-top, 16px) 16px env(safe-area-inset-bottom, 16px);
+  background: rgba(12, 6, 28, 0.55);
+  backdrop-filter: blur(2px);
+  z-index: 30;
+  animation: fade 0.25s ease;
+}
+
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+.panel {
+  width: min(560px, 92vw);
+  max-height: 90vh;
+  overflow-y: auto;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(160deg, #2a1a4a 0%, #1a1033 100%);
+  border: 3px solid var(--gold);
+  border-radius: 14px;
+  padding: 28px 24px;
+  box-shadow: 0 0 0 3px var(--ink), 0 18px 50px rgba(0,0,0,0.6);
+}
+
+.panel h1 {
+  font-size: clamp(26px, 7vw, 46px);
+  letter-spacing: 2px;
+  color: var(--gold);
+  text-shadow: 3px 3px 0 var(--accent);
+  margin-bottom: 10px;
+}
+
+.panel h2 {
+  font-size: clamp(22px, 5.5vw, 34px);
+  color: var(--gold);
+  text-shadow: 2px 2px 0 var(--accent);
+  margin-bottom: 12px;
+}
+
+.subtitle { font-size: clamp(15px, 3.5vw, 19px); color: var(--teal); margin-bottom: 14px; }
+.hint { font-size: clamp(13px, 3vw, 16px); line-height: 1.5; opacity: 0.9; margin-bottom: 22px; }
+
+.card-fact { font-size: clamp(14px, 3.4vw, 18px); line-height: 1.6; margin-bottom: 16px; }
+
+.card-badge { font-size: 40px; margin-bottom: 6px; }
+
+.card-trip {
+  text-align: left;
+  background: rgba(46, 196, 182, 0.12);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+}
+.card-trip-label { font-size: 11px; letter-spacing: 2px; color: var(--teal); }
+.card-trip p { font-size: clamp(13px, 3.2vw, 16px); line-height: 1.5; margin-top: 6px; }
+
+.big-btn {
+  font-family: var(--font);
+  font-size: clamp(16px, 4vw, 20px);
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: var(--ink);
+  background: var(--gold);
+  border: none;
+  border-bottom: 4px solid #c9a23f;
+  border-radius: 10px;
+  padding: 14px 28px;
+  cursor: pointer;
+  transition: transform 0.08s ease, filter 0.15s ease;
+}
+.big-btn:hover { filter: brightness(1.08); }
+.big-btn:active { transform: translateY(3px); border-bottom-width: 1px; }
+
+.controls-hint { margin-top: 18px; font-size: 12px; opacity: 0.7; line-height: 1.5; }
+
+/* Toggle keyboard vs touch hints */
+.touch-only { display: none; }
+body.is-touch .kbd-only { display: none; }
+body.is-touch .touch-only { display: inline; }
+
+/* ---------- HUD ---------- */
+#hud {
+  position: absolute;
+  top: env(safe-area-inset-top, 10px);
+  left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 16px;
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.6);
+  pointer-events: none;
+  z-index: 20;
+}
+.hud-left, .hud-right { display: flex; align-items: baseline; gap: 6px; }
+.hud-label { font-size: 11px; letter-spacing: 2px; color: var(--gold); }
+#speed, #stamps { font-size: clamp(22px, 6vw, 32px); color: #fff; }
+.hud-unit { font-size: 12px; opacity: 0.8; }
+
+/* ---------- Fullscreen button ---------- */
+.icon-btn {
+  position: absolute;
+  bottom: calc(env(safe-area-inset-bottom, 12px) + 8px);
+  right: 12px;
+  width: 46px; height: 46px;
+  font-size: 22px;
+  color: var(--ink);
+  background: rgba(255, 216, 107, 0.92);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 25;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ---------- Touch controls ---------- */
+#touch { position: absolute; inset: 0; z-index: 15; pointer-events: none; }
+.touch-btn {
+  position: absolute;
+  pointer-events: auto;
+  font-family: var(--font);
+  font-weight: bold;
+  color: #fff;
+  background: rgba(26, 16, 51, 0.4);
+  border: 2px solid rgba(255, 216, 107, 0.6);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+}
+.touch-btn:active { background: rgba(255, 216, 107, 0.55); color: var(--ink); }
+
+.touch-left, .touch-right {
+  bottom: calc(env(safe-area-inset-bottom, 16px) + 16px);
+  width: 84px; height: 84px; font-size: 34px;
+}
+.touch-left  { left: 16px; }
+.touch-right { left: 112px; }
+
+.touch-pedals {
+  position: absolute;
+  right: 16px;
+  bottom: calc(env(safe-area-inset-bottom, 16px) + 16px);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.touch-pedal { position: relative; width: 100px; height: 56px; font-size: 16px; }
+.touch-gas { background: rgba(46, 196, 182, 0.45); height: 70px; }

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#1a1033" />
+  <title>Tenerife Drive — December Trip</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="game">
+    <!-- The pixel canvas. Rendered at low res, scaled up crisply. -->
+    <canvas id="screen"></canvas>
+
+    <!-- HUD -->
+    <div id="hud" class="hidden">
+      <div class="hud-left">
+        <span class="hud-label">SPEED</span>
+        <span id="speed">0</span><span class="hud-unit">km/h</span>
+      </div>
+      <div class="hud-right">
+        <span class="hud-label">STAMPS</span>
+        <span id="stamps">0</span><span class="hud-unit">/ <span id="stampsTotal">0</span></span>
+      </div>
+    </div>
+
+    <!-- Fullscreen toggle -->
+    <button id="fsBtn" class="icon-btn" title="Fullscreen" aria-label="Fullscreen">⛶</button>
+
+    <!-- Touch controls (shown on touch devices) -->
+    <div id="touch" class="hidden">
+      <button id="btnLeft" class="touch-btn touch-left" aria-label="Steer left">◀</button>
+      <button id="btnRight" class="touch-btn touch-right" aria-label="Steer right">▶</button>
+      <div class="touch-pedals">
+        <button id="btnBrake" class="touch-btn touch-pedal" aria-label="Brake">BRAKE</button>
+        <button id="btnGas" class="touch-btn touch-pedal touch-gas" aria-label="Accelerate">GAS</button>
+      </div>
+    </div>
+
+    <!-- Start screen -->
+    <div id="start" class="overlay">
+      <div class="panel">
+        <h1>TENERIFE&nbsp;DRIVE</h1>
+        <p class="subtitle">A road trip to our December adventure 🌴</p>
+        <p class="hint">Drive past the landmarks to learn about the island and our trip. Collect every stamp!</p>
+        <button id="startBtn" class="big-btn">START ENGINE</button>
+        <p class="controls-hint">
+          <span class="kbd-only">Arrow keys / WASD to steer &amp; accelerate · F for fullscreen</span>
+          <span class="touch-only">Tap GAS to drive · hold ◀ ▶ to steer</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Checkpoint info card -->
+    <div id="card" class="overlay hidden">
+      <div class="panel card-panel">
+        <div class="card-badge" id="cardBadge">📍</div>
+        <h2 id="cardTitle">Landmark</h2>
+        <p id="cardFact" class="card-fact"></p>
+        <div id="cardTrip" class="card-trip hidden">
+          <span class="card-trip-label">ON OUR TRIP</span>
+          <p id="cardTripText"></p>
+        </div>
+        <button id="cardBtn" class="big-btn">CONTINUE DRIVING</button>
+      </div>
+    </div>
+
+    <!-- Finish screen -->
+    <div id="finish" class="overlay hidden">
+      <div class="panel">
+        <h1>¡VAMOS! 🏁</h1>
+        <p class="subtitle">You collected all the stamps.</p>
+        <p class="hint">See you in Tenerife this December!</p>
+        <button id="finishBtn" class="big-btn">DRIVE AGAIN</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/util.js"></script>
+  <script src="js/sprites.js"></script>
+  <script src="js/checkpoints.js"></script>
+  <script src="js/track.js"></script>
+  <script src="js/input.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
