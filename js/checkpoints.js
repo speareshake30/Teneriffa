@@ -53,6 +53,7 @@ const CHECKPOINTS = [
     icon: '🐧',
     title: 'Loro Parque',
     color: '#2ec4b6',
+    image: 'assets/loroparque.jpg',
     fact: "En världsberömd djurpark i Puerto de la Cruz – med världens största inomhusanläggning för pingviner och en enorm akvarietunnel.",
     trip: null,
   },
