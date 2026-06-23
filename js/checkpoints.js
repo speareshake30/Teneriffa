@@ -16,17 +16,18 @@ const CHECKPOINTS = [
   {
     at: 0.10,
     icon: '🌋',
-    title: 'Mount Teide',
+    title: 'TEIDE',
     color: '#8a5a3c',
-    fact: "Spain's highest peak at 3,718 m — and the 3rd-tallest volcano on Earth measured from the ocean floor. The Guanches called it Echeyde, meaning 'hell'. Its Mars-like slopes have doubled as the Red Planet in movies!",
-    trip: null, // e.g. "Day 2 — cable car up at 10:00. Bring a warm jacket, it's cold at the top!"
+    image: 'assets/teide.jpg',
+    fact: "Spaniens högsta topp på 3 718 meter – och jordens tredje högsta vulkan mätt från havsbotten. Guancherna kallade den för Echeyde, vilket betyder ”helvete”. Dess Mars-liknande sluttningar har till och med agerat stand-in för den röda planeten i filmer!",
+    trip: null, // t.ex. "Dag 2 — linbanan upp kl 10:00. Ta med varm jacka, det är kallt på toppen!"
   },
   {
     at: 0.22,
     icon: '🪨',
     title: 'Roques de García',
     color: '#b06a3a',
-    fact: "A cluster of wild volcanic rock formations beside Teide. The most famous, Roque Cinchado, was once printed on Spain's old 1,000-peseta banknote.",
+    fact: "En samling vilda vulkaniska klippformationer vid Teides fot. Den mest kända, Roque Cinchado, pryddes en gång Spaniens gamla 1 000-pesetassedel.",
     trip: null,
   },
   {
@@ -34,7 +35,7 @@ const CHECKPOINTS = [
     icon: '🧗',
     title: 'Los Gigantes',
     color: '#3a6ea5',
-    fact: "Sheer sea cliffs rising up to ~600 m straight out of the Atlantic. The Guanches called them the 'Walls of Hell'. Boat trips here often spot dolphins and whales.",
+    fact: "Lodräta havsklippor som reser sig upp till ~600 m rakt ur Atlanten. Guancherna kallade dem ”Helvetets väggar”. Båtturer här får ofta sällskap av delfiner och valar.",
     trip: null,
   },
   {
@@ -42,7 +43,7 @@ const CHECKPOINTS = [
     icon: '🏔️',
     title: 'Masca',
     color: '#5a8c4a',
-    fact: "A tiny village hidden in the Teno mountains, nicknamed the 'Machu Picchu of the Canaries'. It was once a perfect pirate hideout, reachable only by a steep ravine trail.",
+    fact: "En liten by gömd i Teno-bergen, med smeknamnet ”Kanarieöarnas Machu Picchu”. Den var en gång ett perfekt piratgömställe, bara nåbar via en brant ravin.",
     trip: null,
   },
   {
@@ -50,7 +51,7 @@ const CHECKPOINTS = [
     icon: '🐧',
     title: 'Loro Parque',
     color: '#2ec4b6',
-    fact: "A world-famous animal park in Puerto de la Cruz, home to the world's largest indoor penguin exhibit and a huge aquarium tunnel.",
+    fact: "En världsberömd djurpark i Puerto de la Cruz – med världens största inomhusanläggning för pingviner och en enorm akvarietunnel.",
     trip: null,
   },
   {
@@ -58,7 +59,7 @@ const CHECKPOINTS = [
     icon: '🏛️',
     title: 'La Laguna',
     color: '#c98b3a',
-    fact: "San Cristóbal de La Laguna — the original capital of the Canary Islands, founded in 1496, and a UNESCO World Heritage town of cobbled streets and colourful colonial houses.",
+    fact: "San Cristóbal de La Laguna – Kanarieöarnas ursprungliga huvudstad, grundad 1496, och en UNESCO-världsarvsstad med kullerstensgator och färgglada koloniala hus.",
     trip: null,
   },
   {
@@ -66,7 +67,7 @@ const CHECKPOINTS = [
     icon: '🌿',
     title: 'Anaga Rural Park',
     color: '#2f7d4f',
-    fact: "A UNESCO Biosphere Reserve of ancient laurisilva (laurel) forest — a living relic of the prehistoric woodlands that once covered the Mediterranean.",
+    fact: "Ett UNESCO-biosfärområde med uråldrig lagerskog (laurisilva) – en levande rest av de förhistoriska skogar som en gång täckte Medelhavsområdet.",
     trip: null,
   },
   {
@@ -74,7 +75,7 @@ const CHECKPOINTS = [
     icon: '🏖️',
     title: 'Playa de las Teresitas',
     color: '#e8c46a',
-    fact: "The golden sand on this palm-lined beach near Santa Cruz isn't local — it was shipped in from the Sahara Desert, since Tenerife's natural beaches are volcanic black sand!",
+    fact: "Den gyllene sanden på denna palmkantade strand nära Santa Cruz är inte lokal – den skeppades hit från Sahara, eftersom Teneriffas naturliga stränder består av svart vulkansand!",
     trip: null,
   },
 ];

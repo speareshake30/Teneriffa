@@ -42,8 +42,9 @@ const Track = {
       curve: curve,
       sprites: [],
       checkpoint: null,
-      // jagged cliff edge: how far the rock/ocean boundary juts out (in road-widths)
-      oceanJitter: 0.10 + (n % 4) * 0.07 + (n % 7) * 0.03,
+      // jagged, mountainous cliff edge: how far the plateau juts out before it
+      // drops to the sea (in road-widths). High-frequency variation = jagged coast.
+      oceanJitter: 0.40 + 0.55 * Math.sin(n * 1.9) + 0.18 * Math.sin(n * 0.7),
       color: Math.floor(n / this.rumbleLength) % 2 ? this.COLORS.DARK : this.COLORS.LIGHT,
     });
   },
@@ -101,6 +102,14 @@ const Track = {
       // occasional second palm further inland for depth
       if (i % 5 === 2) {
         this.segments[i].sprites.push({ type: 'palm', offset: -(2.3 + Math.random() * 0.9), scale: 1 });
+      }
+      // bulgy boulders on the land side (mountainous terrain)
+      if (i % 4 === 3) {
+        this.segments[i].sprites.push({ type: 'stone', offset: -(1.15 + Math.random() * 1.7), scale: 1 });
+      }
+      // a few boulders perched on the plateau edge above the sea (right side)
+      if (i % 6 === 1) {
+        this.segments[i].sprites.push({ type: 'stone', offset: 1.12 + Math.random() * 0.18, scale: 1 });
       }
       // building clusters (towns) on the left
       const town = (Math.floor(i / 60) % 2) === 1;

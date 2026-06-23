@@ -117,6 +117,32 @@ const Sprites = {
     put(0, crownY + 1, C.lime);
   },
 
+  // ---- Boulder / stone (bulgy volcanic rock) ----
+  stone(ctx, cx, baseY, scale) {
+    const px = Math.max(1, scale);
+    const P = { '.': null, 'h': '#9a8c72', 'm': '#7c6f59', 'd': '#574d3f', 's': '#3d352b' };
+    // distant fallback: a simple lump
+    if (px < 2.0) {
+      const p = Math.max(1, Math.ceil(px));
+      ctx.fillStyle = '#7c6f59';
+      ctx.fillRect(Math.round(cx - 3 * px), Math.round(baseY - 4 * px), Math.ceil(6 * px), Math.ceil(4 * px));
+      ctx.fillStyle = '#574d3f';
+      ctx.fillRect(Math.round(cx - 3 * px), Math.round(baseY - px), Math.ceil(6 * px), p);
+      return;
+    }
+    // 10 wide x 7 tall, highlight upper-left, shadow lower-right (bulgy)
+    const G = [
+      '...hhhh...',
+      '..hhhhhm..',
+      '.hhhhhmmm.',
+      'hhhhhmmmmd',
+      'hhhhmmmmdd',
+      '.mmmmmmdd.',
+      '..ssdddd..',
+    ];
+    Sprites.drawGrid(ctx, G, P, cx, baseY, px);
+  },
+
   // ---- City building (skyline filler) ----
   building(ctx, cx, baseY, scale, variant) {
     const px = Math.max(1, scale);

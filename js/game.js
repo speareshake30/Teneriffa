@@ -180,6 +180,14 @@ const Game = {
     document.getElementById('cardBadge').textContent = cp.icon || '📍';
     document.getElementById('cardTitle').textContent = cp.title;
     document.getElementById('cardFact').textContent = cp.fact;
+    const cardImg = document.getElementById('cardImage');
+    if (cp.image) {
+      cardImg.src = cp.image;
+      cardImg.classList.remove('hidden');
+    } else {
+      cardImg.classList.add('hidden');
+      cardImg.removeAttribute('src');
+    }
     const tripBox = document.getElementById('cardTrip');
     if (cp.trip) {
       document.getElementById('cardTripText').textContent = cp.trip;
@@ -253,6 +261,12 @@ const Game = {
       maxy = seg.p2.screen.y;
     }
 
+    // coastline: plateau drop-off to the sea on the right, far -> near so the
+    // nearer (taller) cliffs correctly paint over the farther ones.
+    for (let i = drawn.length - 1; i >= 0; i--) {
+      this.renderCoastline(drawn[i]);
+    }
+
     // sprites: far -> near so nearer overlaps
     for (let i = drawn.length - 1; i >= 0; i--) {
       const seg = drawn[i];
@@ -263,6 +277,37 @@ const Game = {
 
     // player car
     this.renderPlayer();
+  },
+
+  // The road sits on a plateau; to its right the land drops as a jagged rocky
+  // cliff down to the sea far below. Drawn as a tall rock band + sea per segment.
+  renderCoastline(seg) {
+    const W = this.width, H = this.height;
+    const c = seg.color;
+    const p = seg.p1.screen; // use the near edge for a stable foreground band
+    if (p.scale <= 0 || p.w <= 0) return;
+    const r = p.w / 4;
+    const jit = Math.max(0.05, seg.oceanJitter);
+    const edge = p.x + p.w + r + jit * p.w; // jagged land/sea boundary x
+    if (edge > W) return;                    // coast off-screen to the right
+
+    // vertical drop projected like a world height -> the higher the road, the
+    // bigger the gap between plateau and sea (the depth illusion).
+    const CLIFF_H = 1100;
+    const drop = Util.clamp(p.scale * CLIFF_H * H / 2, 4, H);
+    const top = p.y;
+    const waterY = Math.min(H, p.y + drop);
+
+    // rocky cliff face (plateau level down to the waterline)
+    this.poly(edge, top, W + 2, top, W + 2, waterY, edge, waterY, c.rock);
+    // darker shadow at the foot of the cliff for volume
+    const lip = Math.max(1, drop * 0.18);
+    this.poly(edge, waterY - lip, W + 2, waterY - lip, W + 2, waterY, edge, waterY, '#3a3026');
+    // sea from the waterline down to the bottom of the screen
+    this.poly(edge, waterY, W + 2, waterY, W + 2, H, edge, H, c.ocean);
+    // bright foam line where rock meets water
+    const foam = Math.max(1, this.height * 0.008);
+    this.poly(edge, waterY, W + 2, waterY, W + 2, waterY + foam, edge, waterY + foam, '#bfe6f0');
   },
 
   renderSegment(seg) {
@@ -276,16 +321,6 @@ const Game = {
     ctx.fillRect(0, p2.y, W, p1.y - p2.y);
 
     const r1 = p1.w / 4, r2 = p2.w / 4;
-
-    // Ocean to the RIGHT of the road, with a jagged rocky cliff at its edge.
-    // The cliff width jitters per segment so the coastline looks jagged.
-    const j = seg.oceanJitter;
-    const cliffStart1 = p1.x + p1.w + r1, cliffStart2 = p2.x + p2.w + r2;
-    const cliffEnd1 = cliffStart1 + j * p1.w, cliffEnd2 = cliffStart2 + j * p2.w;
-    // sea
-    this.poly(cliffEnd1, p1.y, W + 2, p1.y, W + 2, p2.y, cliffEnd2, p2.y, c.ocean);
-    // rocky cliff strip between the road shoulder and the sea
-    this.poly(cliffStart1, p1.y, cliffEnd1, p1.y, cliffEnd2, p2.y, cliffStart2, p2.y, c.rock);
 
     // rumble strips
     this.poly(p1.x - p1.w - r1, p1.y, p1.x - p1.w, p1.y, p2.x - p2.w, p2.y, p2.x - p2.w - r2, p2.y, c.rumble);
@@ -331,6 +366,7 @@ const Game = {
     let factor, cols;
     switch (sp.type) {
       case 'palm':     factor = 1.5; cols = 16; Sprites.palm(this.ctx, x, y, (factor * scr.w) / cols); break;
+      case 'stone':    factor = 0.7; cols = 10; Sprites.stone(this.ctx, x, y, (factor * scr.w) / cols); break;
       case 'building': factor = 1.8; cols = 6;  Sprites.building(this.ctx, x, y, (factor * scr.w) / cols, sp.variant || 0); break;
       case 'sign':     factor = 1.1; cols = 12; Sprites.sign(this.ctx, x, y, (factor * scr.w) / cols, sp.color); break;
     }

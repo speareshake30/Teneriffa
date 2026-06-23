@@ -17,11 +17,11 @@
     <!-- HUD -->
     <div id="hud" class="hidden">
       <div class="hud-left">
-        <span class="hud-label">SPEED</span>
+        <span class="hud-label">FART</span>
         <span id="speed">0</span><span class="hud-unit">km/h</span>
       </div>
       <div class="hud-right">
-        <span class="hud-label">STAMPS</span>
+        <span class="hud-label">STÄMPLAR</span>
         <span id="stamps">0</span><span class="hud-unit">/ <span id="stampsTotal">0</span></span>
       </div>
     </div>
@@ -52,14 +52,15 @@
     <!-- Checkpoint info card -->
     <div id="card" class="overlay hidden">
       <div class="panel card-panel">
+        <img id="cardImage" class="card-img hidden" alt="" />
         <div class="card-badge" id="cardBadge">📍</div>
         <h2 id="cardTitle">Landmark</h2>
         <p id="cardFact" class="card-fact"></p>
         <div id="cardTrip" class="card-trip hidden">
-          <span class="card-trip-label">ON OUR TRIP</span>
+          <span class="card-trip-label">PÅ VÅR RESA</span>
           <p id="cardTripText"></p>
         </div>
-        <button id="cardBtn" class="big-btn">CONTINUE DRIVING</button>
+        <button id="cardBtn" class="big-btn">KÖR VIDARE</button>
       </div>
     </div>
 
@@ -67,9 +68,9 @@
     <div id="finish" class="overlay hidden">
       <div class="panel">
         <h1>¡VAMOS! 🏁</h1>
-        <p class="subtitle">You collected all the stamps.</p>
-        <p class="hint">See you in Tenerife this December!</p>
-        <button id="finishBtn" class="big-btn">DRIVE AGAIN</button>
+        <p class="subtitle">Du har samlat alla stämplar.</p>
+        <p class="hint">Vi ses på Teneriffa i december!</p>
+        <button id="finishBtn" class="big-btn">KÖR IGEN</button>
       </div>
     </div>
   </div>
