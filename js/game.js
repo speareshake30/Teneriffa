@@ -204,7 +204,7 @@ const Game = {
 
     // sky + scenery
     Sprites.background(ctx, W, H, horizon, this.skyBend);
-    ctx.fillStyle = '#56933f';
+    ctx.fillStyle = '#caa45f';
     ctx.fillRect(0, horizon, W, H - horizon);
 
     const baseSeg = Track.findSegment(this.position);
@@ -309,7 +309,7 @@ const Game = {
     // world-width (in road-widths) per sprite type -> screen pixels -> px per cell
     let factor, cols;
     switch (sp.type) {
-      case 'palm':     factor = 1.0; cols = 10; Sprites.palm(this.ctx, x, y, (factor * scr.w) / cols); break;
+      case 'palm':     factor = 1.3; cols = 10; Sprites.palm(this.ctx, x, y, (factor * scr.w) / cols); break;
       case 'building': factor = 1.8; cols = 6;  Sprites.building(this.ctx, x, y, (factor * scr.w) / cols, sp.variant || 0); break;
       case 'sign':     factor = 1.1; cols = 12; Sprites.sign(this.ctx, x, y, (factor * scr.w) / cols, sp.color); break;
     }

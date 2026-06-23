@@ -15,9 +15,9 @@ const Track = {
 
   // Color themes alternate to create the moving rumble-strip effect.
   COLORS: {
-    LIGHT: { road: '#54505e', grass: '#5fa14a', rumble: '#f6f6f6', lane: '#f6f6f6' },
-    DARK:  { road: '#4b4754', grass: '#56933f', rumble: '#d84343', lane: null },
-    START: { road: '#dddddd', grass: '#5fa14a', rumble: '#dddddd', lane: null },
+    LIGHT: { road: '#54505e', grass: '#d8b676', rumble: '#f6f6f6', lane: '#f6f6f6' },
+    DARK:  { road: '#4b4754', grass: '#caa45f', rumble: '#d84343', lane: null },
+    START: { road: '#dddddd', grass: '#d8b676', rumble: '#dddddd', lane: null },
   },
 
   get length() {
@@ -91,12 +91,17 @@ const Track = {
     const n = this.segments.length;
     // Palms line both sides; buildings appear in clusters (towns).
     for (let i = 10; i < n; i++) {
-      // palms every few segments, alternating side offsets
-      if (i % 5 === 0) {
-        this.segments[i].sprites.push({ type: 'palm', offset: -1.45 - Math.random() * 0.6, scale: 1 });
+      // palms densely line both sides of the desert road
+      if (i % 3 === 0) {
+        this.segments[i].sprites.push({ type: 'palm', offset: -1.4 - Math.random() * 0.7, scale: 1 });
       }
-      if (i % 5 === 2) {
-        this.segments[i].sprites.push({ type: 'palm', offset: 1.45 + Math.random() * 0.6, scale: 1 });
+      if (i % 3 === 1) {
+        this.segments[i].sprites.push({ type: 'palm', offset: 1.4 + Math.random() * 0.7, scale: 1 });
+      }
+      // occasional second palm further out for depth
+      if (i % 9 === 4) {
+        const side = Math.random() < 0.5 ? -1 : 1;
+        this.segments[i].sprites.push({ type: 'palm', offset: side * (2.3 + Math.random() * 0.8), scale: 1 });
       }
       // building clusters
       const town = (Math.floor(i / 60) % 2) === 1;
