@@ -41,10 +41,10 @@ const CHECKPOINTS = [
   },
   {
     at: 0.46,
-    icon: '🏔️',
-    title: 'Masca',
-    color: '#5a8c4a',
-    fact: "En liten by gömd i Teno-bergen, med smeknamnet ”Kanarieöarnas Machu Picchu”. Den var en gång ett perfekt piratgömställe, bara nåbar via en brant ravin.",
+    icon: '🧮',
+    title: 'PRAKTISKT',
+    color: '#7a8c4a',
+    fact: "Alla bokar sin/sina egna resor men här har vi en liten kalkyl för att ge lite referensramar. Ju tidigare bokning desto billigare.\n\nBeräknade kostnader:\nHyrbil ~330 kr/dag\nFlyg 4600 kr t/r +/- per person\nBoende (hotell/airbnb) ~1000 kr per natt\n\nEn person:\nTotalt 1 vecka: ~15 000 kr exkl. mat\nTotalt 2 veckor: ~22 000 kr exkl. mat\n\nTvå personer, delat boende och bil:\nTotalt 1 vecka: 10 000 kr p.p. exkl. mat\nTotalt 2 veckor: 14 000 kr p.p. exkl. mat",
     trip: null,
   },
   {

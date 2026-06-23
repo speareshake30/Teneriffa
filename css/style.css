@@ -95,7 +95,7 @@ html, body {
 .subtitle { font-size: clamp(15px, 3.5vw, 19px); color: var(--teal); margin-bottom: 14px; }
 .hint { font-size: clamp(13px, 3vw, 16px); line-height: 1.5; opacity: 0.9; margin-bottom: 22px; }
 
-.card-fact { font-size: clamp(14px, 3.4vw, 18px); line-height: 1.6; margin-bottom: 16px; }
+.card-fact { font-size: clamp(14px, 3.4vw, 18px); line-height: 1.6; margin-bottom: 16px; white-space: pre-line; }
 
 .card-img {
   display: block;
@@ -108,6 +108,9 @@ html, body {
 }
 
 .card-badge { font-size: 40px; margin-bottom: 6px; }
+
+/* Start-plaque photo: it's a portrait, so bias the crop to the top so faces show */
+#start .card-img { object-position: center 22%; max-height: 32vh; }
 
 .card-trip {
   text-align: left;
