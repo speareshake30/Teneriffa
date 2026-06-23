@@ -15,9 +15,9 @@ const Track = {
 
   // Color themes alternate to create the moving rumble-strip effect.
   COLORS: {
-    LIGHT: { road: '#54505e', grass: '#d8b676', rumble: '#f6f6f6', lane: '#f6f6f6' },
-    DARK:  { road: '#4b4754', grass: '#caa45f', rumble: '#d84343', lane: null },
-    START: { road: '#dddddd', grass: '#d8b676', rumble: '#dddddd', lane: null },
+    LIGHT: { road: '#54505e', grass: '#d8b676', rumble: '#f6f6f6', lane: '#f6f6f6', ocean: '#2f78ad', rock: '#6a5b4a' },
+    DARK:  { road: '#4b4754', grass: '#caa45f', rumble: '#d84343', lane: null, ocean: '#2a6c9e', rock: '#5a4d3e' },
+    START: { road: '#dddddd', grass: '#d8b676', rumble: '#dddddd', lane: null, ocean: '#2f78ad', rock: '#6a5b4a' },
   },
 
   get length() {
@@ -42,6 +42,8 @@ const Track = {
       curve: curve,
       sprites: [],
       checkpoint: null,
+      // jagged cliff edge: how far the rock/ocean boundary juts out (in road-widths)
+      oceanJitter: 0.10 + (n % 4) * 0.07 + (n % 7) * 0.03,
       color: Math.floor(n / this.rumbleLength) % 2 ? this.COLORS.DARK : this.COLORS.LIGHT,
     });
   },
@@ -89,27 +91,23 @@ const Track = {
 
   placeScenery() {
     const n = this.segments.length;
-    // Palms line both sides; buildings appear in clusters (towns).
+    // The RIGHT side of the road is ocean, so all land scenery (palms, towns)
+    // lives on the LEFT (negative offsets) only.
     for (let i = 10; i < n; i++) {
-      // palms densely line both sides of the desert road
-      if (i % 3 === 0) {
-        this.segments[i].sprites.push({ type: 'palm', offset: -1.4 - Math.random() * 0.7, scale: 1 });
+      // palms densely line the left (land) side of the road
+      if (i % 2 === 0) {
+        this.segments[i].sprites.push({ type: 'palm', offset: -1.4 - Math.random() * 0.6, scale: 1 });
       }
-      if (i % 3 === 1) {
-        this.segments[i].sprites.push({ type: 'palm', offset: 1.4 + Math.random() * 0.7, scale: 1 });
+      // occasional second palm further inland for depth
+      if (i % 5 === 2) {
+        this.segments[i].sprites.push({ type: 'palm', offset: -(2.3 + Math.random() * 0.9), scale: 1 });
       }
-      // occasional second palm further out for depth
-      if (i % 9 === 4) {
-        const side = Math.random() < 0.5 ? -1 : 1;
-        this.segments[i].sprites.push({ type: 'palm', offset: side * (2.3 + Math.random() * 0.8), scale: 1 });
-      }
-      // building clusters
+      // building clusters (towns) on the left
       const town = (Math.floor(i / 60) % 2) === 1;
       if (town && i % 7 === 0) {
-        const side = Math.random() < 0.5 ? -1 : 1;
         this.segments[i].sprites.push({
           type: 'building',
-          offset: side * (2.2 + Math.random() * 1.2),
+          offset: -(2.4 + Math.random() * 1.2),
           scale: 1,
           variant: Util.randInt(0, 5),
         });
@@ -123,8 +121,8 @@ const Track = {
       const segIndex = Util.clamp(Math.floor(cp.at * n), 2, n - 3);
       const seg = this.segments[segIndex];
       seg.checkpoint = { ...cp, id: idx, hit: false };
-      // a sign on the right so the player sees what's coming
-      seg.sprites.push({ type: 'sign', offset: 1.6, scale: 1.1, color: cp.color });
+      // a sign on the left (land side) so the player sees what's coming
+      seg.sprites.push({ type: 'sign', offset: -1.7, scale: 1.1, color: cp.color });
     });
   },
 };

@@ -43,6 +43,7 @@ const Game = {
     this.decel = -this.maxSpeed / 5;
     this.offRoadDecel = -this.maxSpeed / 2;
     this.offRoadLimit = this.maxSpeed / 4;
+    this.cruiseSpeed = this.maxSpeed * 0.22; // slow automatic cruising speed
 
     Track.build();
     Input.init();
@@ -78,15 +79,20 @@ const Game = {
     this.state = 'playing';
   },
 
-  // ---- resize: keep low internal resolution but match window aspect ----
+  // ---- resize: low internal resolution that MATCHES the viewport aspect ----
+  // Cap the longer side and derive the other from the real aspect ratio, so the
+  // canvas never stretches (works in portrait, e.g. iPhone 16 Pro 402x874).
   resize() {
-    const winW = window.innerWidth;
-    const winH = window.innerHeight;
-    const targetH = 240;
-    this.height = targetH;
-    this.width = Math.round(targetH * (winW / winH));
-    // keep width sane on extreme aspect ratios
-    this.width = Util.clamp(this.width, 240, 640);
+    const winW = window.innerWidth || 1;
+    const winH = window.innerHeight || 1;
+    const MAX_LONG = 480; // longest internal edge, keeps the pixel-art look
+    if (winW >= winH) {
+      this.width = MAX_LONG;
+      this.height = Math.max(1, Math.round(MAX_LONG * (winH / winW)));
+    } else {
+      this.height = MAX_LONG;
+      this.width = Math.max(1, Math.round(MAX_LONG * (winW / winH)));
+    }
     this.canvas.width = this.width;
     this.canvas.height = this.height;
     this.ctx.imageSmoothingEnabled = false;
@@ -117,13 +123,17 @@ const Game = {
     // centrifugal pull on curves
     this.playerX -= dx * speedPercent * seg.curve * this.centrifugal;
 
-    // acceleration
+    // acceleration: drives automatically at a slow cruise; GAS boosts.
     if (Input.gas) {
       this.speed = Util.accelerate(this.speed, this.accel, dt);
     } else if (Input.brake) {
       this.speed = Util.accelerate(this.speed, this.breaking, dt);
+    } else if (this.speed < this.cruiseSpeed) {
+      // ease up to cruising speed
+      this.speed = Math.min(this.cruiseSpeed, Util.accelerate(this.speed, this.accel * 0.6, dt));
     } else {
-      this.speed = Util.accelerate(this.speed, this.decel, dt);
+      // coast back down toward cruise after boosting
+      this.speed = Math.max(this.cruiseSpeed, Util.accelerate(this.speed, this.decel, dt));
     }
 
     // off-road slow down
@@ -261,12 +271,23 @@ const Game = {
     const c = seg.color;
     const p1 = seg.p1.screen, p2 = seg.p2.screen;
 
-    // grass band
+    // land band (sand) fills the whole row first
     ctx.fillStyle = c.grass;
     ctx.fillRect(0, p2.y, W, p1.y - p2.y);
 
-    // rumble strips
     const r1 = p1.w / 4, r2 = p2.w / 4;
+
+    // Ocean to the RIGHT of the road, with a jagged rocky cliff at its edge.
+    // The cliff width jitters per segment so the coastline looks jagged.
+    const j = seg.oceanJitter;
+    const cliffStart1 = p1.x + p1.w + r1, cliffStart2 = p2.x + p2.w + r2;
+    const cliffEnd1 = cliffStart1 + j * p1.w, cliffEnd2 = cliffStart2 + j * p2.w;
+    // sea
+    this.poly(cliffEnd1, p1.y, W + 2, p1.y, W + 2, p2.y, cliffEnd2, p2.y, c.ocean);
+    // rocky cliff strip between the road shoulder and the sea
+    this.poly(cliffStart1, p1.y, cliffEnd1, p1.y, cliffEnd2, p2.y, cliffStart2, p2.y, c.rock);
+
+    // rumble strips
     this.poly(p1.x - p1.w - r1, p1.y, p1.x - p1.w, p1.y, p2.x - p2.w, p2.y, p2.x - p2.w - r2, p2.y, c.rumble);
     this.poly(p1.x + p1.w + r1, p1.y, p1.x + p1.w, p1.y, p2.x + p2.w, p2.y, p2.x + p2.w + r2, p2.y, c.rumble);
 

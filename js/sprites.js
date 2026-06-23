@@ -29,24 +29,28 @@ const Sprites = {
   car(ctx, cx, baseY, scale, steer) {
     // scale ~ desired width in px / 16
     const px = Math.max(1, scale);
+    // Toyota Avensis 2006-style sedan, rear view, silver-metallic / sandy gold.
     const P = {
       '.': null,
-      'r': '#ff3b5c', 'd': '#b3243f', 'k': '#1a0c14',
-      'w': '#ffe9ee', 'l': '#ffd86b', 's': '#3a1620',
+      'H': '#e0dccb', 'B': '#c9c2ad', 'S': '#9c917a',  // body: highlight / mid / shadow
+      'G': '#313539', 'g': '#475059',                  // glass / glass highlight
+      'L': '#cf2f2f', 'P': '#eaeae2', 'C': '#b6bdc1',  // tail light / plate / chrome
+      'k': '#141414',                                  // tyre
     };
-    // 16 wide x 11 tall (rear view)
+    // 16 wide x 12 tall (rear view)
     const G = [
-      '....dddddddd....',
-      '...drrrrrrrrd...',
-      '..drrrrrrrrrrd..',
-      '.drrwwwwwwwwrrd.',
-      '.drwwwwwwwwwwrd.',
-      'drrrrrrrrrrrrrrd',
-      'krrrrrrrrrrrrrrk',
-      'krllrrrrrrrrllrk',
-      'kssssssssssssssk',
-      '.kk.kkkkkkkk.kk.',
-      '.kk........kk...',
+      '...HHHHHHHHHH...',
+      '..HGGGGGGGGGGH..',
+      '..BgGGGGGGGGgB..',
+      '.BBBBBBBBBBBBBB.',
+      'BBBBBBBBBBBBBBBB',
+      'BHHHHHHHHHHHHHHB',
+      'BLLLLBBBBBBLLLLB',
+      'CCCCCCCCCCCCCCCC',
+      'CCCCCPPPPPPCCCCC',
+      'SSSSSSSSSSSSSSSS',
+      'kkkBBBBBBBBBBkkk',
+      'kkkBBBBBBBBBBkkk',
     ];
     // subtle lean while steering
     const lean = Util.clamp(steer || 0, -1, 1) * px;
