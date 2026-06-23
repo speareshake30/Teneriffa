@@ -309,7 +309,7 @@ const Game = {
     // world-width (in road-widths) per sprite type -> screen pixels -> px per cell
     let factor, cols;
     switch (sp.type) {
-      case 'palm':     factor = 1.3; cols = 10; Sprites.palm(this.ctx, x, y, (factor * scr.w) / cols); break;
+      case 'palm':     factor = 1.5; cols = 16; Sprites.palm(this.ctx, x, y, (factor * scr.w) / cols); break;
       case 'building': factor = 1.8; cols = 6;  Sprites.building(this.ctx, x, y, (factor * scr.w) / cols, sp.variant || 0); break;
       case 'sign':     factor = 1.1; cols = 12; Sprites.sign(this.ctx, x, y, (factor * scr.w) / cols, sp.color); break;
     }

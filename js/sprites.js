@@ -54,23 +54,63 @@ const Sprites = {
   },
 
   // ---- Palm tree ----
+  // Drawn procedurally: a thin dark trunk topped by fronds radiating out and
+  // drooping, each with a lime-green highlight along its upper edge — matching
+  // the reference pixel-art palm. (16 cells wide, ~22 tall.)
   palm(ctx, cx, baseY, scale) {
     const px = Math.max(1, scale);
-    const P = { '.': null, 't': '#6b4423', 'T': '#8a5a2b', 'g': '#2f7d4f', 'G': '#3fa05f' };
-    const G = [
-      '..gG..Gg..',
-      '.gGGGGGGg.',
-      'gGG.GG.GGg',
-      '.gGGGGGGg.',
-      '...gGGg...',
-      '....tT....',
-      '....tT....',
-      '....tT....',
-      '....tT....',
-      '...tTTt...',
-      '..tTttTt..',
+    const C = { trunk: '#26331a', dark: '#33501f', mid: '#6f8f4a', lime: '#aac95c' };
+
+    // Distant palms: draw a cheap blob so we stay fast with hundreds on screen.
+    if (px < 2.2) {
+      const p = Math.max(1, Math.ceil(px));
+      ctx.fillStyle = C.trunk;
+      ctx.fillRect(Math.round(cx - p / 2), Math.round(baseY - 7 * px), p, Math.ceil(7 * px));
+      ctx.fillStyle = C.mid;
+      ctx.fillRect(Math.round(cx - 4 * px), Math.round(baseY - 10 * px), Math.ceil(8 * px), Math.ceil(3 * px));
+      ctx.fillStyle = C.lime;
+      ctx.fillRect(Math.round(cx - 4 * px), Math.round(baseY - 10 * px), Math.ceil(8 * px), Math.ceil(px));
+      return;
+    }
+
+    const ox = cx - px / 2; // so gx=0 straddles the center
+    const put = (gx, gy, color) => {
+      ctx.fillStyle = color;
+      ctx.fillRect(Math.round(ox + gx * px), Math.round(baseY - (gy + 1) * px), Math.ceil(px), Math.ceil(px));
+    };
+
+    const crownY = 15; // top of the trunk / base of the fronds
+
+    // Trunk (thin, with a small flared base)
+    for (let gy = 0; gy <= crownY; gy++) put(0, gy, C.trunk);
+    put(-1, 0, C.trunk);
+    put(1, 0, C.trunk);
+
+    // Frond directions: [dx, dy, length]. Mix of upward and drooping fronds.
+    const fronds = [
+      [-0.95, 0.55, 8], [-0.55, 0.95, 7], [0.05, 1.0, 6], [0.6, 0.92, 7],
+      [0.97, 0.5, 8], [1.0, -0.05, 8], [-1.0, 0.05, 8], [-0.9, -0.55, 7], [0.9, -0.6, 7],
     ];
-    Sprites.drawGrid(ctx, G, P, cx, baseY, px);
+
+    // Pass 1: frond bodies (dark underside + mid-green body)
+    for (const [dx, dy, len] of fronds) {
+      for (let i = 1; i <= len; i++) {
+        const gx = dx * i, gy = crownY + dy * i;
+        put(gx, gy - 1, C.dark);
+        put(gx, gy, C.mid);
+      }
+    }
+    // Pass 2: lime highlight along the upper edge of each frond (outer portion)
+    for (const [dx, dy, len] of fronds) {
+      for (let i = Math.ceil(len * 0.25); i <= len; i++) {
+        const gx = dx * i, gy = crownY + dy * i;
+        put(gx, gy + 1, C.lime);
+      }
+    }
+
+    // Crown center
+    put(0, crownY, C.mid);
+    put(0, crownY + 1, C.lime);
   },
 
   // ---- City building (skyline filler) ----
