@@ -215,24 +215,29 @@ const Sprites = {
       ctx.fillRect(sunX - sunR, Math.round(y), sunR * 2, Math.max(1, Math.round(h * 0.012)));
     }
 
-    // Distant Teide volcano silhouette (left of center)
+    // Distant Teide volcano silhouette (left of center) — broad and not too
+    // pointy: a wide cone with a short, almost-flat summit (like the real peak).
     const tBase = horizon;
-    const tPeakX = w * 0.30 - bend * 0.5;
-    const tPeakY = horizon - h * 0.28;
-    const tHalf = w * 0.20;
+    const tcx = w * 0.30 - bend * 0.5;
+    const tHalf = w * 0.36;
+    const tH = h * 0.30;
     ctx.fillStyle = '#5a2f6b';
     ctx.beginPath();
-    ctx.moveTo(tPeakX - tHalf, tBase);
-    ctx.lineTo(tPeakX, tPeakY);
-    ctx.lineTo(tPeakX + tHalf, tBase);
+    ctx.moveTo(tcx - tHalf, tBase);
+    ctx.lineTo(tcx - tHalf * 0.45, tBase - tH * 0.58);
+    ctx.lineTo(tcx - tHalf * 0.14, tBase - tH * 0.93);
+    ctx.lineTo(tcx + tHalf * 0.14, tBase - tH * 0.93);
+    ctx.lineTo(tcx + tHalf * 0.45, tBase - tH * 0.58);
+    ctx.lineTo(tcx + tHalf, tBase);
     ctx.closePath();
     ctx.fill();
-    // snow cap
+    // snow cap across the broad summit
     ctx.fillStyle = '#f3e9ff';
     ctx.beginPath();
-    ctx.moveTo(tPeakX - tHalf * 0.22, tPeakY + h * 0.05);
-    ctx.lineTo(tPeakX, tPeakY);
-    ctx.lineTo(tPeakX + tHalf * 0.22, tPeakY + h * 0.05);
+    ctx.moveTo(tcx - tHalf * 0.18, tBase - tH * 0.78);
+    ctx.lineTo(tcx - tHalf * 0.14, tBase - tH * 0.93);
+    ctx.lineTo(tcx + tHalf * 0.14, tBase - tH * 0.93);
+    ctx.lineTo(tcx + tHalf * 0.18, tBase - tH * 0.78);
     ctx.closePath();
     ctx.fill();
 

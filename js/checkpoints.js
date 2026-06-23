@@ -24,10 +24,11 @@ const CHECKPOINTS = [
   },
   {
     at: 0.22,
-    icon: '🪨',
-    title: 'Roques de García',
-    color: '#b06a3a',
-    fact: "En samling vilda vulkaniska klippformationer vid Teides fot. Den mest kända, Roque Cinchado, pryddes en gång Spaniens gamla 1 000-pesetassedel.",
+    icon: '📅',
+    title: 'NÄR OCH VAR',
+    color: '#3a8fb0',
+    image: 'assets/lasgalletas.webp',
+    fact: "Molly, Andreas, Guje, Marcus och Linnea är nere åtminstone 21:a December till 3:e Januari. Det är vanligtvis mellan 18-24 grader varmt vid den tiden på året. Vi bor i närheten av Las Galletas (Costa Silencio) med gångavstånd till havet!",
     trip: null,
   },
   {

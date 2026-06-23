@@ -222,7 +222,13 @@ const Game = {
 
     // sky + scenery
     Sprites.background(ctx, W, H, horizon, this.skyBend);
-    ctx.fillStyle = '#caa45f';
+    // Sea base: the whole area below the horizon is ocean (hazier far, deeper
+    // near). Land is painted on top per-segment, so only the right side beyond
+    // the coastline stays sea.
+    const sea = ctx.createLinearGradient(0, horizon, 0, H);
+    sea.addColorStop(0, '#4a97c2');
+    sea.addColorStop(1, '#1d5985');
+    ctx.fillStyle = sea;
     ctx.fillRect(0, horizon, W, H - horizon);
 
     const baseSeg = Track.findSegment(this.position);
@@ -261,12 +267,6 @@ const Game = {
       maxy = seg.p2.screen.y;
     }
 
-    // coastline: plateau drop-off to the sea on the right, far -> near so the
-    // nearer (taller) cliffs correctly paint over the farther ones.
-    for (let i = drawn.length - 1; i >= 0; i--) {
-      this.renderCoastline(drawn[i]);
-    }
-
     // sprites: far -> near so nearer overlaps
     for (let i = drawn.length - 1; i >= 0; i--) {
       const seg = drawn[i];
@@ -279,48 +279,27 @@ const Game = {
     this.renderPlayer();
   },
 
-  // The road sits on a plateau; to its right the land drops as a jagged rocky
-  // cliff down to the sea far below. Drawn as a tall rock band + sea per segment.
-  renderCoastline(seg) {
-    const W = this.width, H = this.height;
-    const c = seg.color;
-    const p = seg.p1.screen; // use the near edge for a stable foreground band
-    if (p.scale <= 0 || p.w <= 0) return;
-    const r = p.w / 4;
-    const jit = Math.max(0.05, seg.oceanJitter);
-    const edge = p.x + p.w + r + jit * p.w; // jagged land/sea boundary x
-    if (edge > W) return;                    // coast off-screen to the right
-
-    // vertical drop projected like a world height -> the higher the road, the
-    // bigger the gap between plateau and sea (the depth illusion).
-    const CLIFF_H = 1100;
-    const drop = Util.clamp(p.scale * CLIFF_H * H / 2, 4, H);
-    const top = p.y;
-    const waterY = Math.min(H, p.y + drop);
-
-    // rocky cliff face (plateau level down to the waterline)
-    this.poly(edge, top, W + 2, top, W + 2, waterY, edge, waterY, c.rock);
-    // darker shadow at the foot of the cliff for volume
-    const lip = Math.max(1, drop * 0.18);
-    this.poly(edge, waterY - lip, W + 2, waterY - lip, W + 2, waterY, edge, waterY, '#3a3026');
-    // sea from the waterline down to the bottom of the screen
-    this.poly(edge, waterY, W + 2, waterY, W + 2, H, edge, H, c.ocean);
-    // bright foam line where rock meets water
-    const foam = Math.max(1, this.height * 0.008);
-    this.poly(edge, waterY, W + 2, waterY, W + 2, waterY + foam, edge, waterY + foam, '#bfe6f0');
-  },
-
   renderSegment(seg) {
-    const ctx = this.ctx;
     const W = this.width;
     const c = seg.color;
     const p1 = seg.p1.screen, p2 = seg.p2.screen;
-
-    // land band (sand) fills the whole row first
-    ctx.fillStyle = c.grass;
-    ctx.fillRect(0, p2.y, W, p1.y - p2.y);
-
     const r1 = p1.w / 4, r2 = p2.w / 4;
+
+    // Land/sea boundary to the RIGHT of the road: road edge + rumble + a sandy
+    // shelf (this is the "distance to the water") + jagged jitter so the coast
+    // reads as mountainous. Sea is the base layer underneath; we paint land up
+    // to this boundary, leaving the sea visible beyond it.
+    const SHELF = 0.7;
+    const j = Math.max(0, seg.oceanJitter);
+    const b1 = p1.x + p1.w + r1 + (SHELF + j) * p1.w;
+    const b2 = p2.x + p2.w + r2 + (SHELF + j) * p2.w;
+
+    // land (sand) from the left screen edge to the jagged coastline
+    this.poly(0, p2.y, b2, p2.y, b1, p1.y, 0, p1.y, c.grass);
+    // rocky cliff edge with a dark shadow lip -> the plateau dropping to the sea
+    const cw1 = p1.w * 0.16, cw2 = p2.w * 0.16;
+    this.poly(b1, p1.y, b1 + cw1, p1.y, b2 + cw2, p2.y, b2, p2.y, c.rock);
+    this.poly(b1 + cw1, p1.y, b1 + cw1 * 1.6, p1.y, b2 + cw2 * 1.6, p2.y, b2 + cw2, p2.y, '#332a20');
 
     // rumble strips
     this.poly(p1.x - p1.w - r1, p1.y, p1.x - p1.w, p1.y, p2.x - p2.w, p2.y, p2.x - p2.w - r2, p2.y, c.rumble);
