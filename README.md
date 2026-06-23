@@ -12,15 +12,26 @@ Runs fullscreen in Chrome on desktop and in Safari/Chrome on iPhone & Android.
 
 **Easiest:** double-click `index.html` to open it in your browser.
 
-**Recommended (avoids any browser file restrictions, and lets you test on your phone):**
+**Local dev server:**
 
 ```bash
-# from the project folder
-python3 -m http.server 8000
+python3 -m http.server 8000   # then open http://localhost:8000
 ```
 
-Then open `http://localhost:8000` on your computer. To play on your **phone**, make sure
-the phone is on the same Wi-Fi and visit `http://<your-computer-ip>:8000`.
+### 🌐 Serving the live site (teneriffa.candycluster.com)
+
+The site is served from this machine on **`localhost:8080`**, which the reverse proxy maps
+to `https://teneriffa.candycluster.com`. Use the included script — it pulls the latest from
+GitHub and serves on port 8080, re-syncing in the background so new commits go live
+automatically:
+
+```bash
+./serve.sh
+```
+
+Options: `PORT=8080` (default) and `SYNC_INTERVAL=60` seconds between GitHub pulls
+(`SYNC_INTERVAL=0` to disable auto-sync). To keep it running across reboots, wrap it in a
+systemd service, a `tmux`/`screen` session, or your process manager of choice.
 
 Tap **START ENGINE**, then:
 
