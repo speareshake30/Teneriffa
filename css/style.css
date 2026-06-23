@@ -177,12 +177,12 @@ body.is-touch .touch-only { display: inline; }
   opacity: 0; pointer-events: none;
 }
 
-/* ---------- Fullscreen / music buttons ---------- */
-#musicBtn { right: 66px; }
+/* ---------- Music button (top center) ---------- */
 .icon-btn {
   position: absolute;
-  bottom: calc(env(safe-area-inset-bottom, 12px) + 8px);
-  right: 12px;
+  top: calc(env(safe-area-inset-top, 8px) + 6px);
+  left: 50%;
+  transform: translateX(-50%);
   width: 46px; height: 46px;
   font-size: 22px;
   color: var(--ink);
