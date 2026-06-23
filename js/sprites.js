@@ -48,9 +48,7 @@ const Sprites = {
       'BLLLLBBBBBBLLLLB',
       'CCCCCCCCCCCCCCCC',
       'CCCCCPPPPPPCCCCC',
-      'SSSSSSSSSSSSSSSS',
-      'kkkBBBBBBBBBBkkk',
-      'kkkBBBBBBBBBBkkk',
+      '..kk........kk..',
     ];
     // subtle lean while steering
     const lean = Util.clamp(steer || 0, -1, 1) * px;
@@ -220,7 +218,7 @@ const Sprites = {
     const tBase = horizon;
     const tcx = w * 0.30 - bend * 0.5;
     const tHalf = w * 0.36;
-    const tH = h * 0.30;
+    const tH = h * 0.16;
     ctx.fillStyle = '#5a2f6b';
     ctx.beginPath();
     ctx.moveTo(tcx - tHalf, tBase);

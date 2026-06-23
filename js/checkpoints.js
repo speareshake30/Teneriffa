@@ -33,10 +33,10 @@ const CHECKPOINTS = [
   },
   {
     at: 0.34,
-    icon: '🧗',
-    title: 'Los Gigantes',
-    color: '#3a6ea5',
-    fact: "Lodräta havsklippor som reser sig upp till ~600 m rakt ur Atlanten. Guancherna kallade dem ”Helvetets väggar”. Båtturer här får ofta sällskap av delfiner och valar.",
+    icon: '🎉',
+    title: 'DET BLIR KUL',
+    color: '#e0913a',
+    fact: "Alla kommer att göra sin egen grej men fira julafton och nyår tillsammans med BBQ på Gujes terass! Vi vill att 10-12 pers ska komma men vi vet att vi iallafall blir 5. Restid (Arlanda ARN → Tenerife Sur, TFS) tar ungefär 6 timmar.",
     trip: null,
   },
   {
