@@ -76,6 +76,7 @@ const Game = {
     document.getElementById('card').classList.add('hidden');
     document.getElementById('hud').classList.remove('hidden');
     Input.showTouchControls();
+    if (window.Music) Music.start(); // START tap is the user gesture audio needs
     this.state = 'playing';
   },
 

@@ -168,7 +168,17 @@ body.is-touch .touch-only { display: inline; }
 #speed, #stamps { font-size: clamp(22px, 6vw, 32px); color: #fff; }
 .hud-unit { font-size: 12px; opacity: 0.8; }
 
-/* ---------- Fullscreen button ---------- */
+/* Hidden YouTube player — kept in the DOM (offscreen) so it can play audio;
+   display:none would stop playback in some browsers. */
+#ytplayer {
+  position: absolute;
+  width: 1px; height: 1px;
+  left: -9999px; top: -9999px;
+  opacity: 0; pointer-events: none;
+}
+
+/* ---------- Fullscreen / music buttons ---------- */
+#musicBtn { right: 66px; }
 .icon-btn {
   position: absolute;
   bottom: calc(env(safe-area-inset-bottom, 12px) + 8px);

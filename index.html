@@ -40,8 +40,13 @@
       </div>
     </div>
 
+    <!-- Hidden background-music player (YouTube IFrame API) -->
+    <div id="ytplayer" aria-hidden="true"></div>
+
     <!-- Fullscreen toggle -->
     <button id="fsBtn" class="icon-btn" title="Fullscreen" aria-label="Fullscreen">⛶</button>
+    <!-- Music toggle -->
+    <button id="musicBtn" class="icon-btn" title="Musik" aria-label="Music on/off">🔇</button>
 
     <!-- Touch controls (shown on touch devices) -->
     <div id="touch" class="hidden">
@@ -95,6 +100,7 @@
   <script src="js/checkpoints.js"></script>
   <script src="js/track.js"></script>
   <script src="js/input.js"></script>
+  <script src="js/music.js"></script>
   <script src="js/game.js"></script>
 </body>
 </html>
