@@ -58,7 +58,7 @@ const Game = {
 
   _wireUI() {
     document.getElementById('startBtn').addEventListener('click', () => this.startGame());
-    document.getElementById('finishBtn').addEventListener('click', () => this.startGame());
+    // finishBtn is now a link to the RSVP form (navigates in the same tab)
     document.getElementById('cardBtn').addEventListener('click', () => this.dismissCard());
   },
 
