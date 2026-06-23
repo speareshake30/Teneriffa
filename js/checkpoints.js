@@ -62,6 +62,7 @@ const CHECKPOINTS = [
     icon: '🏛️',
     title: 'La Laguna',
     color: '#c98b3a',
+    image: 'assets/lalaguna.jpg',
     fact: "San Cristóbal de La Laguna – Kanarieöarnas ursprungliga huvudstad, grundad 1496, och en UNESCO-världsarvsstad med kullerstensgator och färgglada koloniala hus.",
     trip: null,
   },
